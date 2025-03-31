@@ -1,70 +1,65 @@
 use serde::{Serialize, Deserialize};
 use std::collections::{HashSet, HashMap};
 use anyhow::{Result, anyhow};
-use regex::Regex;
 
-// Structs for notes and notebooks
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Note {
     pub name: String,
     pub contents: String,
-    pub links: Vec<String>,        // @link_to_note
-    pub tags: HashSet<String>,     // #tags
-    pub backlinks: Vec<String>,    // Computed later
+    pub links: Vec<String>,
+    pub tags: HashSet<String>,
+    pub backlinks: Vec<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Notebook {
-    pub notes: HashMap<String, Note>, // Keyed by note_name
+    pub notes: HashMap<String, Note>,
 }
 
-// Parser
 use pest::Parser;
 use pest_derive::Parser;
 
 #[derive(Parser)]
 #[grammar = "note.pest"]
-struct NoteParser;
+pub struct NoteParser;
 
 pub fn parse_note(text: &str) -> Result<Note, anyhow::Error> {
     let pairs = NoteParser::parse(Rule::note, text)
-        .map_err(|e| anyhow!("1: Failed to parse note: {}", e))?;
-
-    let note_pair = pairs.into_iter().next()
-        .ok_or_else(|| anyhow!("2: No valid note structure found in text"))?;
+        .map_err(|e| anyhow!("Parse error: {}", e))?;
 
     let mut name = String::new();
     let mut contents = String::new();
 
-    for pair in note_pair.into_inner() {
+    for pair in pairs {
         match pair.as_rule() {
-            Rule::name => name = pair.as_str().to_string(),
-            Rule::contents => contents = pair.as_str().to_string(),
+            Rule::note => {
+                for inner_pair in pair.into_inner() {
+                    match inner_pair.as_rule() {
+                        Rule::name => name = inner_pair.as_str().to_string(),
+                        Rule::contents => contents = inner_pair.as_str().to_string(),
+                        _ => {}
+                    }
+                }
+            }
             _ => {}
         }
     }
 
     if name.is_empty() {
-        return Err(anyhow!("3: Note must have a non-empty name"));
+        return Err(anyhow!("Name cannot be empty"));
     }
 
-    // Extract links and tags from contents
-    let link_re = match Regex::new(r"@[a-zA-Z]+") {
-        Ok(re) => re,
-        Err(e) => return Err(anyhow!("4: Failed to compile regex for links: {}", e)),
-    };
-    let tag_re = match Regex::new(r"@[a-zA-Z]+") {
-        Ok(re) => re,
-        Err(e) => return Err(anyhow!("4: Failed to compile regex for links: {}", e)),
-    };
+    let mut links = Vec::new();
+    let mut tags = HashSet::new();
 
-    let links: Vec<String> = link_re.find_iter(&contents)
-        .map(|m| m.as_str()[1..].to_string())  // Strip @
-        .collect();
-
-    let tags: HashSet<String> = tag_re.find_iter(&contents)
-        .map(|m| m.as_str()[1..].to_string())  // Strip #
-        .collect();
+    // Split contents into words and check Python-style
+    for word in contents.split_whitespace() {
+        if word.starts_with("@") {
+            links.push(word[1..].to_string());
+        } else if word.starts_with("#") {
+            tags.insert(word[1..].to_string());
+        }
+    }
 
     Ok(Note {
         name,
@@ -78,8 +73,6 @@ pub fn parse_note(text: &str) -> Result<Note, anyhow::Error> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use std::fs;
-    use std::path::PathBuf;
 
     #[test]
     fn test_parse_note() {
