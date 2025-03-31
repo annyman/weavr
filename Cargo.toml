@@ -1,0 +1,19 @@
+[package]
+name = "note_compiler"
+version = "0.1.0"
+edition = "2021"
+
+# Metadata
+authors = ["Anny"]
+description = "A link-based note-taking CLI app"
+license = "MIT"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }  # CLI parsing with derive macros
+pest = "2.7"  # Parsing library
+pest_derive = "2.7"  # Procedural macros for pest
+serde = { version = "1.0", features = ["derive"] }  # Serialization/deserialization
+serde_json = "1.0"  # JSON support
+petgraph = "0.6"  # Graph data structures
+anyhow = "1.0"  # Simple error handling
+regex = "1.10"  # Regular expressions

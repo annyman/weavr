@@ -1,0 +1,6 @@
+name = @{ ASCII_ALPHA+ }
+contents = { (!("}" | "@" ~ ASCII_ALPHA+ | "#" ~ ASCII_ALPHA+) ~ ANY)* }
+note = { name ~ "{" ~ contents ~ "}" }
+link = { "@" ~ ASCII_ALPHA+ }
+tag = { "#" ~ ASCII_ALPHA+ }
+WHITESPACE = _{ " " | "\n" }
