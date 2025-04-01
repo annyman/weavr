@@ -1,0 +1,27 @@
+{
+  "notes": {
+    "ultraviolet_catastrophe": {
+      "name": "ultraviolet_catastrophe",
+      "contents": "#max_planck broke #physics for the origin story of @quantum_mechanics",
+      "links": [
+        "quantum_mechanics"
+      ],
+      "tags": [
+        "max_planck",
+        "physics"
+      ],
+      "backlinks": []
+    },
+    "quantum_mechanics": {
+      "name": "quantum_mechanics",
+      "contents": "discrete randomization field in #physics",
+      "links": [],
+      "tags": [
+        "physics"
+      ],
+      "backlinks": [
+        "ultraviolet_catastrophe"
+      ]
+    }
+  }
+}

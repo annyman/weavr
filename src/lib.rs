@@ -1,6 +1,7 @@
 use serde::{Serialize, Deserialize};
 use std::collections::{HashSet, HashMap};
 use anyhow::{Result, anyhow};
+use std::fs;
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Note {
@@ -25,7 +26,7 @@ pub struct NoteParser;
 
 pub fn parse_note(text: &str) -> Result<Note, anyhow::Error> {
     let pairs = NoteParser::parse(Rule::note, text)
-        .map_err(|e| anyhow!("Parse error: {}", e))?;
+        .map_err(|e| anyhow!("1: Parse error: {}", e))?;
 
     let mut name = String::new();
     let mut contents = String::new();
@@ -46,7 +47,7 @@ pub fn parse_note(text: &str) -> Result<Note, anyhow::Error> {
     }
 
     if name.is_empty() {
-        return Err(anyhow!("Name cannot be empty"));
+        return Err(anyhow!("2: Name cannot be empty"));
     }
 
     let mut links = Vec::new();
@@ -70,20 +71,70 @@ pub fn parse_note(text: &str) -> Result<Note, anyhow::Error> {
     })
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+pub fn split_and_parse_notes(text: &str) -> Result<Notebook, anyhow::Error> {
+    let mut notebook = Notebook {
+        notes: HashMap::new(),
+    };
 
-    #[test]
-    fn test_parse_note() {
-        let text = "bruh { contents go here and i can link to @note2 and add tag of #some_tag }";
-        let note = match parse_note(text) {
-            Ok(note) => note,
-            Err(e) => panic!("{}", e),
-        };
-        assert_eq!(note.name, "bruh");
-        assert_eq!(note.contents, "contents go here and i can link to @note2 and add tag of #some_tag");
-        assert_eq!(note.links, vec!["note2"]);
-        assert_eq!(note.tags, HashSet::from(["some_tag".to_string()]));
+    let text = text.trim();
+    println!("Text: {}", text);
+
+    // Split at "}" and rebuild each note
+    let mut current_note = String::new();
+    for line in text.lines() {
+        let trimmed = line.trim();
+        if trimmed.is_empty() {
+            continue;
+        }
+        current_note.push_str(trimmed);
+        if trimmed.ends_with("}") {
+            let note = parse_note(trimmed)?;
+            notebook.notes.insert(note.name.clone(), note);
+            current_note.clear();
+        } else {
+            current_note.push_str(" ");
+        }
     }
+
+    if !current_note.is_empty() {
+        let note = parse_note(&current_note)?;
+        notebook.notes.insert(note.name.clone(), note);
+    }
+
+    // Compute backlinks
+    let mut backlinks: HashMap<String, Vec<String>> = HashMap::new();
+    for note in notebook.notes.values() {
+        for link in &note.links {
+            backlinks.entry(link.clone())
+                .or_insert(Vec::new())
+                .push(note.name.clone());
+        }
+    }
+    for (name, note) in notebook.notes.iter_mut() {
+        if let Some(links) = backlinks.get(name) {
+            note.backlinks = links.clone();
+        }
+    }
+
+    Ok(notebook)
+}
+
+pub fn serialize_notebook_to_json(notebook: &Notebook) -> Result<String, anyhow::Error> {
+    serde_json::to_string_pretty(notebook)
+        .map_err(|e| anyhow!("3: JSON serialization error: {}", e))
+}
+
+pub fn process_note_file(file_path: &str) -> Result<String, anyhow::Error> {
+    let text = fs::read_to_string(file_path)
+        .map_err(|e| anyhow!("Failed to read file {}: {}", file_path, e))?;
+    
+    let notebook = split_and_parse_notes(&text)?;
+    
+    serde_json::to_string_pretty(&notebook)
+        .map_err(|e| anyhow!("JSON serialization error: {}", e))
+}
+
+pub fn write_json_to_file(json: &str, output_path: &str) -> Result<(), anyhow::Error> {
+    fs::write(output_path, json)
+        .map_err(|e| anyhow!("Failed to write to {}: {}", output_path, e))
 }

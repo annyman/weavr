@@ -1,4 +1,4 @@
 note = { name ~ "{" ~ contents ~ "}" }
-name = { ASCII_ALPHA+ }
+name = { (ASCII_ALPHA | ASCII_DIGIT | "_")+ }
 contents = { (!("}") ~ ANY)* }
 WHITESPACE = _{ " " | "\n" }
