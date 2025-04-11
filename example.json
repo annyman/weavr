@@ -1,27 +1,106 @@
 {
   "notes": {
-    "ultraviolet_catastrophe": {
-      "name": "ultraviolet_catastrophe",
-      "contents": "#max_planck broke #physics for the origin story of @quantum_mechanics",
+    "heisenberg_uncertainty_principle": {
+      "name": "heisenberg_uncertainty_principle",
+      "contents": "#quantum_mechanics #physics states that certain properties of a particle cannot be precisely known at the same time, a key concept in @quantum_mechanics",
       "links": [
         "quantum_mechanics"
       ],
       "tags": [
-        "max_planck",
+        "quantum_mechanics",
         "physics"
       ],
       "backlinks": []
     },
-    "quantum_mechanics": {
-      "name": "quantum_mechanics",
-      "contents": "discrete randomization field in #physics",
-      "links": [],
+    "bohr_model": {
+      "name": "bohr_model",
+      "contents": "#quantum_mechanics #physics an early model of the atom that introduced energy quantization, building upon the work of @max_planck",
+      "links": [
+        "max_planck"
+      ],
       "tags": [
-        "physics"
+        "physics",
+        "quantum_mechanics"
+      ],
+      "backlinks": []
+    },
+    "thermal_radiation": {
+      "name": "thermal_radiation",
+      "contents": "#black_body_radiation #physics radiation emitted by all objects at temperatures above absolute zero, related to @black_body_radiation",
+      "links": [
+        "black_body_radiation"
+      ],
+      "tags": [
+        "physics",
+        "black_body_radiation"
+      ],
+      "backlinks": []
+    },
+    "schrodinger_equation": {
+      "name": "schrodinger_equation",
+      "contents": "#quantum_mechanics #mathematics a mathematical equation that describes the time-evolution of a quantum system, crucial for understanding phenomena like @quantum_entanglement",
+      "links": [
+        "quantum_entanglement"
+      ],
+      "tags": [
+        "quantum_mechanics",
+        "mathematics"
       ],
       "backlinks": [
-        "ultraviolet_catastrophe"
+        "quantum_entanglement"
       ]
+    },
+    "max_planck": {
+      "name": "max_planck",
+      "contents": "#founder_of_quantum_theory #physics introduced the concept of quantized energy through the Planck constant, leading to the development of @quantum_mechanics",
+      "links": [
+        "quantum_mechanics"
+      ],
+      "tags": [
+        "physics",
+        "founder_of_quantum_theory"
+      ],
+      "backlinks": [
+        "bohr_model"
+      ]
+    },
+    "quantum_entanglement": {
+      "name": "quantum_entanglement",
+      "contents": "#quantum_mechanics #physics a phenomenon where particles become interconnected in such a way that their properties are correlated, often studied using the @schrodinger_equation",
+      "links": [
+        "schrodinger_equation"
+      ],
+      "tags": [
+        "physics",
+        "quantum_mechanics"
+      ],
+      "backlinks": [
+        "schrodinger_equation"
+      ]
+    },
+    "photoelectric_effect": {
+      "name": "photoelectric_effect",
+      "contents": "#quantum_mechanics #physics demonstrates the particle nature of light through the emission of electrons from a metal surface, which led to the development of @quantum_mechanics",
+      "links": [
+        "quantum_mechanics"
+      ],
+      "tags": [
+        "physics",
+        "quantum_mechanics"
+      ],
+      "backlinks": []
+    },
+    "wave_particle_duality": {
+      "name": "wave_particle_duality",
+      "contents": "#quantum_mechanics #physics describes the ability of particles to exhibit both wave-like and particle-like behavior, a fundamental aspect of @quantum_mechanics",
+      "links": [
+        "quantum_mechanics"
+      ],
+      "tags": [
+        "quantum_mechanics",
+        "physics"
+      ],
+      "backlinks": []
     }
   }
 }

@@ -1,2 +1,39 @@
-ultraviolet_catastrophe { #max_planck broke #physics for the origin story of @quantum_mechanics }
-quantum_mechanics { discrete randomization field in #physics }
+max_planck {
+#founder_of_quantum_theory #physics
+introduced the concept of quantized energy through the Planck constant, leading to the development of @quantum_mechanics
+}
+
+wave_particle_duality {
+#quantum_mechanics #physics
+describes the ability of particles to exhibit both wave-like and particle-like behavior, a fundamental aspect of @quantum_mechanics
+}
+
+heisenberg_uncertainty_principle {
+#quantum_mechanics #physics
+states that certain properties of a particle cannot be precisely known at the same time, a key concept in @quantum_mechanics
+}
+
+schrodinger_equation {
+#quantum_mechanics #mathematics
+a mathematical equation that describes the time-evolution of a quantum system, crucial for understanding phenomena like @quantum_entanglement
+}
+
+quantum_entanglement {
+#quantum_mechanics #physics
+a phenomenon where particles become interconnected in such a way that their properties are correlated, often studied using the @schrodinger_equation
+}
+
+photoelectric_effect {
+#quantum_mechanics #physics
+demonstrates the particle nature of light through the emission of electrons from a metal surface, which led to the development of @quantum_mechanics
+}
+
+bohr_model {
+#quantum_mechanics #physics
+an early model of the atom that introduced energy quantization, building upon the work of @max_planck
+}
+
+thermal_radiation {
+#black_body_radiation #physics
+radiation emitted by all objects at temperatures above absolute zero, related to @black_body_radiation
+}

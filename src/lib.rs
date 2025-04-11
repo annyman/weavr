@@ -76,32 +76,26 @@ pub fn split_and_parse_notes(text: &str) -> Result<Notebook, anyhow::Error> {
         notes: HashMap::new(),
     };
 
-    let text = text.trim();
-    println!("Text: {}", text);
-
-    // Split at "}" and rebuild each note
+    let cleaned_text = text.trim();
     let mut current_note = String::new();
-    for line in text.lines() {
+
+    for line in cleaned_text.lines() {
         let trimmed = line.trim();
         if trimmed.is_empty() {
             continue;
         }
         current_note.push_str(trimmed);
+
         if trimmed.ends_with("}") {
-            let note = parse_note(trimmed)?;
+            let note = parse_note(&current_note)
+                .map_err(|e| anyhow!("Failed to parse note: {}", e))?;
             notebook.notes.insert(note.name.clone(), note);
             current_note.clear();
-        } else {
+        } else if !current_note.is_empty() {
             current_note.push_str(" ");
         }
     }
 
-    if !current_note.is_empty() {
-        let note = parse_note(&current_note)?;
-        notebook.notes.insert(note.name.clone(), note);
-    }
-
-    // Compute backlinks
     let mut backlinks: HashMap<String, Vec<String>> = HashMap::new();
     for note in notebook.notes.values() {
         for link in &note.links {
