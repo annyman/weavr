@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Variables
-REPO_URL="https://github.com/annyman/noteweaver.git" # Replace with your repo URL
-APP_NAME="your-cli-app"                                      # Replace with your app name
+REPO_URL="https://github.com/annyman/weavr.git" # Replace with your repo URL
+APP_NAME="weavr"                                      # Replace with your app name
 DESKTOP_FILE="/usr/share/applications/${APP_NAME}.desktop"
 INSTALL_DIR="/usr/bin"
 
