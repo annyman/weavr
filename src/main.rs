@@ -1,5 +1,5 @@
 use clap::Parser;
-use note_compiler::*;
+use weavr::*;
 use std::path::Path;
 use std::io::{Write, stderr};
 use anyhow::{Result, Context, anyhow};
